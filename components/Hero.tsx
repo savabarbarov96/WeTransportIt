@@ -1,9 +1,64 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
 import { PHONE_NUMBER, PHONE_NUMBER_RAW } from '../constants';
 import { PhoneIcon } from './IconComponents';
 
 const Hero: React.FC = () => {
+  // Parallax effect state
+  const [isMobile, setIsMobile] = useState(false);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const springConfig = { damping: 25, stiffness: 150 };
+  const x = useSpring(mouseX, springConfig);
+  const y = useSpring(mouseY, springConfig);
+
+  useEffect(() => {
+    // Check if device is mobile
+    setIsMobile(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
+  }, []);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (isMobile) return;
+
+    const rect = e.currentTarget.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    const offsetX = (e.clientX - centerX) / rect.width;
+    const offsetY = (e.clientY - centerY) / rect.height;
+
+    mouseX.set(offsetX * 30);
+    mouseY.set(offsetY * 30);
+  };
+
+  const handleMouseLeave = () => {
+    if (isMobile) return;
+    mouseX.set(0);
+    mouseY.set(0);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!isMobile) return;
+
+    const touch = e.touches[0];
+    const rect = e.currentTarget.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    const offsetX = (touch.clientX - centerX) / rect.width;
+    const offsetY = (touch.clientY - centerY) / rect.height;
+
+    mouseX.set(offsetX * 20);
+    mouseY.set(offsetY * 20);
+  };
+
+  const handleTouchEnd = () => {
+    if (!isMobile) return;
+    mouseX.set(0);
+    mouseY.set(0);
+  };
+
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -194,62 +249,27 @@ const Hero: React.FC = () => {
               variants={slideInRight}
               initial="hidden"
               animate="visible"
-              className="relative hidden lg:block mt-8 lg:mt-0"
+              className="relative mt-8 lg:mt-0"
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
             >
               {/* Spotlight glow effect */}
               <div className="absolute inset-0 bg-gradient-radial from-orange-500/30 via-orange-400/10 to-transparent blur-3xl"></div>
 
-              {/* Van Image */}
+              {/* Van Image with Parallax */}
               <motion.img
                 src="/assets/van.png"
                 alt="We Transport It Van"
                 className="relative z-10 w-full h-auto drop-shadow-2xl"
-                animate={{
-                  y: [0, -20, 0],
-                }}
-                transition={{
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
+                style={{ x, y }}
               />
 
               {/* Accent glow behind van */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-orange-500/20 rounded-full blur-[100px] -z-10"></div>
             </motion.div>
           </div>
-
-          {/* Stats moved to bottom on mobile, inline on desktop */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="mt-8 sm:mt-12 lg:mt-20"
-          >
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 max-w-4xl mx-auto">
-              <motion.div
-                variants={itemVariants}
-                className="text-center p-4 sm:p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:border-orange-500/50 transition-all duration-300"
-                whileHover={{ scale: 1.05, backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
-              >
-                <p className="font-bold text-sm sm:text-base lg:text-lg text-white">Над 500 успешни превоза</p>
-              </motion.div>
-              <motion.div
-                variants={itemVariants}
-                className="text-center p-4 sm:p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:border-orange-500/50 transition-all duration-300"
-                whileHover={{ scale: 1.05, backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
-              >
-                <p className="font-bold text-sm sm:text-base lg:text-lg text-white">Професионален екип с опит</p>
-              </motion.div>
-              <motion.div
-                variants={itemVariants}
-                className="text-center p-4 sm:p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:border-orange-500/50 transition-all duration-300"
-                whileHover={{ scale: 1.05, backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
-              >
-                <p className="font-bold text-sm sm:text-base lg:text-lg text-white">Работим 7 дни в седмицата</p>
-              </motion.div>
-            </div>
-          </motion.div>
         </div>
       </div>
 

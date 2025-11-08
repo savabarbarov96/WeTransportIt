@@ -2,6 +2,7 @@
 import React from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
+import BeforeAfter from './components/BeforeAfter';
 import Services from './components/Services';
 import Coverage from './components/Coverage';
 import Pricing from './components/Pricing';
@@ -19,6 +20,7 @@ const App: React.FC = () => {
       <Header />
       <main>
         <Hero />
+        <BeforeAfter />
         <Services />
         <Coverage />
         <Pricing />
