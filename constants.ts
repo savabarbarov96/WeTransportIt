@@ -3,9 +3,9 @@ import React from 'react';
 import type { NavLink, Service, Testimonial, FaqItem } from './types';
 import { TruckIcon, UsersIcon, BuildingOfficeIcon, ComputerDesktopIcon, TrashIcon, ArchiveBoxIcon, CheckBadgeIcon, ClockIcon, WrenchScrewdriverIcon, ShieldCheckIcon, BanknotesIcon, CalendarDaysIcon, PhoneIcon, DocumentTextIcon, CheckIcon as ProcessCheckIcon, MapPinIcon, ChevronRightIcon } from './components/IconComponents';
 
-export const PHONE_NUMBER = "+359 888 123 456";
-export const PHONE_NUMBER_RAW = "+359888123456";
-export const EMAIL_ADDRESS = "info@wetransportit.bg";
+export const PHONE_NUMBER = "+359 88 946 2299";
+export const PHONE_NUMBER_RAW = "+359889462299";
+export const EMAIL_ADDRESS = "wetransportit@abv.bg";
 export const FACEBOOK_URL = "https://www.facebook.com/profile.php?id=100092312070247";
 export const TIKTOK_URL = "https://www.tiktok.com/@we.transport.it";
 export const WHATSAPP_URL = `https://wa.me/${PHONE_NUMBER_RAW}`;
@@ -80,12 +80,11 @@ export const SECONDARY_CITIES = [
 
 // Fix: Replaced JSX with React.createElement to allow for correct type inference, fixing errors in components consuming this data.
 export const ADVANTAGES = [
-    { icon: React.createElement(CheckBadgeIcon, { className: "h-8 w-8 text-blue-800" }), title: "Опитен екип", text: "Професионални хамали с дългогодишен опит" },
-    { icon: React.createElement(ClockIcon, { className: "h-8 w-8 text-blue-800" }), title: "Надеждност", text: "Пунктуалност и спазване на уговорките" },
-    { icon: React.createElement(WrenchScrewdriverIcon, { className: "h-8 w-8 text-blue-800" }), title: "Професионално оборудване", text: "Съвременно оборудване за безопасна работа" },
-    { icon: React.createElement(ShieldCheckIcon, { className: "h-8 w-8 text-blue-800" }), title: "Застраховка", text: "Застрахован транспорт и товари" },
-    { icon: React.createElement(BanknotesIcon, { className: "h-8 w-8 text-blue-800" }), title: "Достъпни цени", text: "Конкурентни цени без компромис с качеството" },
-    { icon: React.createElement(CalendarDaysIcon, { className: "h-8 w-8 text-blue-800" }), title: "Гъвкав график", text: "Работим 7 дни в седмицата, включително празници" }
+    { icon: React.createElement(ClockIcon, { className: "h-12 w-12 text-orange-500" }), title: "БЪРЗО", text: "Винаги се стараем да впечатлим нашите клиенти със светкавично изпълнение на нашите услуги." },
+    { icon: React.createElement(CheckBadgeIcon, { className: "h-12 w-12 text-orange-500" }), title: "КАЧЕСТВЕНО", text: "Знаем, че вие искате работата да бъде свършена качествено и точно това е, което ще получите от нас." },
+    { icon: React.createElement(ShieldCheckIcon, { className: "h-12 w-12 text-orange-500" }), title: "ЧИСТО", text: "Чистим толкова добре, че след нас не остава и прашинка." },
+    { icon: React.createElement(WrenchScrewdriverIcon, { className: "h-12 w-12 text-orange-500" }), title: "ПРЕЦИЗНО", text: "Без значение дали трябва да изкопаем канал за кабел или да бутнем цяла стена, винаги работим с хирургическа точност и прецизност." },
+    { icon: React.createElement(BanknotesIcon, { className: "h-12 w-12 text-orange-500" }), title: "НА ДОСТЪПНИ ЦЕНИ", text: "Ще ви изготвим индивидуална оферта с цена, на която няма да можете да устоите." }
 ];
 
 export const TESTIMONIALS: Testimonial[] = [

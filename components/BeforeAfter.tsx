@@ -14,9 +14,9 @@ const BeforeAfter: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const pairs: BeforeAfterPair[] = [
-    { before: '/before1.jpg', after: '/after1.jpg', title: 'Преместване на апартамент' },
-    { before: '/before2.jpg', after: '/after2.jpg', title: 'Транспорт на офис' },
-    { before: '/before3.jpg', after: '/after3.jpg', title: 'Товарене и разтоварване' },
+    { before: '/assets/before1.jpg', after: '/assets/after1.jpg', title: 'Преместване на апартамент' },
+    { before: '/assets/before2.jpg', after: '/assets/after2.jpg', title: 'Транспорт на офис' },
+    { before: '/assets/before3.jpg', after: '/assets/after3.jpg', title: 'Товарене и разтоварване' },
   ];
 
   // Animation variants

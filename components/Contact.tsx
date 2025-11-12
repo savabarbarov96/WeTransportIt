@@ -15,6 +15,7 @@ const Contact: React.FC = () => {
     });
     const [errors, setErrors] = useState<Partial<typeof formData>>({});
     const [submitted, setSubmitted] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const validate = () => {
         const newErrors: Partial<typeof formData> = {};
@@ -33,14 +34,60 @@ const Contact: React.FC = () => {
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (validate()) {
-            console.log('Form submitted:', formData);
-            setSubmitted(true);
-            // Here you would typically send the data to a server
-            // For example:
-            // fetch('/api/contact', { method: 'POST', body: JSON.stringify(formData) })
+            setIsSubmitting(true);
+
+            try {
+                // Prepare data for Web3Forms
+                const web3formsData = {
+                    access_key: '5f627b7d-485a-439b-bd12-3511c493a2af',
+                    name: formData.name,
+                    phone: formData.phone,
+                    email: formData.email || 'Не е предоставен',
+                    service: formData.service,
+                    from_address: formData.fromAddress || 'Не е предоставен',
+                    to_address: formData.toAddress || 'Не е предоставен',
+                    message: formData.message || 'Няма допълнително съобщение',
+                    subject: `Ново запитване за ${formData.service} от ${formData.name}`
+                };
+
+                const response = await fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(web3formsData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    console.log('Form submitted successfully:', result);
+                    setSubmitted(true);
+                    // Reset form
+                    setFormData({
+                        name: '',
+                        phone: '',
+                        email: '',
+                        service: 'Хамалски услуги',
+                        fromAddress: '',
+                        toAddress: '',
+                        message: '',
+                        gdpr: false,
+                    });
+                } else {
+                    console.error('Form submission failed:', result);
+                    setErrors({ message: 'Възникна грешка при изпращане. Моля, опитайте отново.' });
+                }
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                setErrors({ message: 'Възникна грешка при изпращане. Моля, опитайте отново.' });
+            } finally {
+                setIsSubmitting(false);
+            }
         }
     };
 
@@ -69,12 +116,25 @@ const Contact: React.FC = () => {
                     <div className="bg-white p-8 rounded-lg shadow-lg">
                         <h3 className="text-2xl font-bold text-gray-900 mb-6">Изпратете запитване</h3>
                         {submitted ? (
-                             <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4" role="alert">
-                                <p className="font-bold">Благодарим!</p>
-                                <p>Вашето запитване беше изпратено успешно. Ще се свържем с Вас до 30 минути.</p>
+                             <div className="space-y-4">
+                                <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4" role="alert">
+                                    <p className="font-bold">Благодарим!</p>
+                                    <p>Вашето запитване беше изпратено успешно. Ще се свържем с Вас до 30 минути.</p>
+                                </div>
+                                <button
+                                    onClick={() => setSubmitted(false)}
+                                    className="w-full py-3 px-4 border border-blue-800 rounded-md shadow-sm text-lg font-medium text-blue-800 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                                >
+                                    Изпратете ново запитване
+                                </button>
                              </div>
                         ) : (
                             <form onSubmit={handleSubmit} noValidate>
+                                {errors.message && (
+                                    <div className="mb-4 bg-red-100 border-l-4 border-red-500 text-red-700 p-4" role="alert">
+                                        <p>{errors.message}</p>
+                                    </div>
+                                )}
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                     <div>
                                         <label htmlFor="name" className="block text-sm font-medium text-gray-700">Име</label>
@@ -128,9 +188,13 @@ const Contact: React.FC = () => {
                                     {errors.gdpr && <p className="text-red-500 text-xs mt-1">{errors.gdpr}</p>}
                                 </div>
                                 <div className="mt-6">
-                                    <button type="submit" className="w-full flex justify-center items-center gap-2 py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-blue-800 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
+                                    <button
+                                        type="submit"
+                                        disabled={isSubmitting}
+                                        className="w-full flex justify-center items-center gap-2 py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-blue-800 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
                                         <PaperAirplaneIcon className="h-5 w-5" />
-                                        Изпрати запитване
+                                        {isSubmitting ? 'Изпраща се...' : 'Изпрати запитване'}
                                     </button>
                                 </div>
                             </form>
