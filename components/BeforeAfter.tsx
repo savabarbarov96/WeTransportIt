@@ -17,6 +17,7 @@ const BeforeAfter: React.FC = () => {
     { before: '/assets/before1.jpg', after: '/assets/after1.jpg', title: 'Преместване на апартамент' },
     { before: '/assets/before2.jpg', after: '/assets/after2.jpg', title: 'Транспорт на офис' },
     { before: '/assets/before3.jpg', after: '/assets/after3.jpg', title: 'Товарене и разтоварване' },
+    { before: '/assets/before4.jpg', after: '/assets/after4.jpg', title: 'Професионален транспорт' },
   ];
 
   // Animation variants

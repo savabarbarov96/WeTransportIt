@@ -16,9 +16,9 @@ const HomePage: React.FC = () => {
       <main>
         <Hero />
         <BeforeAfter />
+        <QuickContact />
         <Services />
         <Process />
-        <QuickContact />
         <Coverage />
         <About />
         <Testimonials />
