@@ -9,7 +9,9 @@ import {
   PhoneIcon,
   CheckIcon,
   ClockIcon,
-  ShieldCheckIcon
+  ShieldCheckIcon,
+  DocumentTextIcon,
+  CalendarDaysIcon
 } from '../components/IconComponents';
 import { PHONE_NUMBER, EMAIL_ADDRESS, WHATSAPP_URL } from '../constants';
 
@@ -71,6 +73,33 @@ const HomePage: React.FC = () => {
       icon: <ShieldCheckIcon className="h-12 w-12" />,
       title: 'ЗАСТРАХОВКА',
       text: 'Всички товари са застраховани при транспорт'
+    }
+  ];
+
+  const processSteps = [
+    {
+      icon: <PhoneIcon className="h-10 w-10" />,
+      number: 1,
+      title: 'ОБАДЕТЕ СЕ',
+      description: 'Свържете се с нас по телефон или WhatsApp и опишете нуждите си'
+    },
+    {
+      icon: <DocumentTextIcon className="h-10 w-10" />,
+      number: 2,
+      title: 'ПОЛУЧЕТЕ ОФЕРТА',
+      description: 'Ще получите безплатна оферта за до 5 минути'
+    },
+    {
+      icon: <CalendarDaysIcon className="h-10 w-10" />,
+      number: 3,
+      title: 'УГОВОРЕТЕ ДЕН',
+      description: 'Избираме удобна дата и час за изпълнение'
+    },
+    {
+      icon: <CheckIcon className="h-10 w-10" />,
+      number: 4,
+      title: 'ГОТОВО',
+      description: 'Нашият екип извършва преместването професионално'
     }
   ];
 
@@ -221,6 +250,151 @@ const HomePage: React.FC = () => {
             />
           </div>
         </motion.div>
+      </section>
+
+      {/* Process Section */}
+      <section
+        className="py-20 relative"
+        style={{ backgroundColor: theme.colors.primary.dark }}
+      >
+        {/* Background pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 50px,
+                ${theme.colors.accent.orange} 50px,
+                ${theme.colors.accent.orange} 51px
+              )`
+            }}
+          />
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2
+              className="text-5xl sm:text-6xl font-bold mb-4"
+              style={{
+                fontFamily: theme.fonts.heading,
+                color: theme.colors.neutral.offWhite
+              }}
+            >
+              КАК РАБОТИМ?
+            </h2>
+            <p
+              className="text-xl"
+              style={{ color: theme.colors.neutral.lightGrey }}
+            >
+              Лесно и бързо - само 4 стъпки до вашето преместване
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {processSteps.map((step, index) => (
+              <motion.div
+                key={step.number}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.15 }}
+                whileHover={{ y: -10 }}
+                className="relative text-center"
+              >
+                {/* Step number badge */}
+                <div
+                  className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-12 h-12 rounded-full flex items-center justify-center font-bold text-2xl z-10"
+                  style={{
+                    background: theme.gradients.accent,
+                    color: theme.colors.neutral.offWhite,
+                    boxShadow: `0 4px 20px rgba(255, 107, 53, 0.4)`
+                  }}
+                >
+                  {step.number}
+                </div>
+
+                {/* Icon circle */}
+                <div
+                  className="inline-flex items-center justify-center w-24 h-24 rounded-full mb-6 mt-8"
+                  style={{
+                    backgroundColor: theme.colors.primary.main,
+                    border: `3px solid ${theme.colors.accent.orange}`,
+                    color: theme.colors.accent.bright
+                  }}
+                >
+                  {step.icon}
+                </div>
+
+                {/* Content */}
+                <h3
+                  className="text-2xl font-bold mb-3"
+                  style={{
+                    fontFamily: theme.fonts.heading,
+                    color: theme.colors.neutral.offWhite
+                  }}
+                >
+                  {step.title}
+                </h3>
+                <p
+                  className="text-base"
+                  style={{ color: theme.colors.neutral.lightGrey }}
+                >
+                  {step.description}
+                </p>
+
+                {/* Connecting arrow (except for last item) */}
+                {index < processSteps.length - 1 && (
+                  <div className="hidden lg:block absolute top-1/3 -right-4 transform translate-x-full">
+                    <svg
+                      className="w-8 h-8"
+                      style={{ color: theme.colors.accent.orange }}
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </div>
+                )}
+              </motion.div>
+            ))}
+          </div>
+
+          {/* CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.6 }}
+            className="text-center mt-16"
+          >
+            <a
+              href={`tel:${PHONE_NUMBER}`}
+              className="inline-flex items-center gap-3 px-10 py-5 rounded-lg text-2xl font-bold transition-all duration-300 transform hover:scale-105"
+              style={{
+                background: theme.gradients.accent,
+                color: theme.colors.neutral.offWhite,
+                fontFamily: theme.fonts.heading,
+                boxShadow: `0 10px 40px rgba(255, 107, 53, 0.5)`
+              }}
+            >
+              <PhoneIcon className="h-7 w-7" />
+              ЗАПОЧНЕТЕ СЕГА
+            </a>
+          </motion.div>
+        </div>
       </section>
 
       {/* Cities Coverage Section */}
