@@ -3,6 +3,7 @@ import Hero from '../components/Hero';
 import BeforeAfter from '../components/BeforeAfter';
 import Services from '../components/Services';
 import Process from '../components/Process';
+import QuickContact from '../components/QuickContact';
 import Coverage from '../components/Coverage';
 import About from '../components/About';
 import Testimonials from '../components/Testimonials';
@@ -17,6 +18,7 @@ const HomePage: React.FC = () => {
         <BeforeAfter />
         <Services />
         <Process />
+        <QuickContact />
         <Coverage />
         <About />
         <Testimonials />

@@ -190,7 +190,7 @@ const Hero: React.FC = () => {
                 variants={itemVariants}
                 className="text-base sm:text-lg md:text-xl text-gray-300 mb-6 sm:mb-8 max-w-xl mx-auto lg:mx-0 leading-relaxed"
               >
-                Бързо, надеждно и на достъпни цени. Обслужваме Стара Загора, Казанлък, Чирпан, Раднево и цялата област.
+                Бързо, надеждно и на достъпни цени. Базирани в Стара Загора, обслужваме цялата страна.
               </motion.p>
 
               {/* Call to Action Buttons */}
