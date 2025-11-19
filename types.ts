@@ -11,7 +11,6 @@ export interface Service {
   title: string;
   description: string;
   features: string[];
-  price: string;
   cta: string;
 }
 

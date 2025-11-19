@@ -7,9 +7,6 @@ const Contact: React.FC = () => {
         name: '',
         phone: '',
         email: '',
-        service: 'Хамалски услуги',
-        fromAddress: '',
-        toAddress: '',
         message: '',
         gdpr: false,
     });
@@ -46,11 +43,8 @@ const Contact: React.FC = () => {
                     name: formData.name,
                     phone: formData.phone,
                     email: formData.email || 'Не е предоставен',
-                    service: formData.service,
-                    from_address: formData.fromAddress || 'Не е предоставен',
-                    to_address: formData.toAddress || 'Не е предоставен',
                     message: formData.message || 'Няма допълнително съобщение',
-                    subject: `Ново запитване за ${formData.service} от ${formData.name}`
+                    subject: `Ново запитване от ${formData.name}`
                 };
 
                 const response = await fetch('https://api.web3forms.com/submit', {
@@ -72,9 +66,6 @@ const Contact: React.FC = () => {
                         name: '',
                         phone: '',
                         email: '',
-                        service: 'Хамалски услуги',
-                        fromAddress: '',
-                        toAddress: '',
                         message: '',
                         gdpr: false,
                     });
@@ -153,28 +144,8 @@ const Contact: React.FC = () => {
                                     {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
                                 </div>
                                 <div className="mt-6">
-                                    <label htmlFor="service" className="block text-sm font-medium text-gray-700">Услуга</label>
-                                    <select id="service" name="service" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" value={formData.service} onChange={handleChange}>
-                                        <option>Хамалски услуги</option>
-                                        <option>Транспорт</option>
-                                        <option>Офис преместване</option>
-                                        <option>Извозване</option>
-                                        <option>Друго</option>
-                                    </select>
-                                </div>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
-                                    <div>
-                                        <label htmlFor="fromAddress" className="block text-sm font-medium text-gray-700">Адрес "от"</label>
-                                        <input type="text" name="fromAddress" id="fromAddress" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" value={formData.fromAddress} onChange={handleChange} />
-                                    </div>
-                                    <div>
-                                        <label htmlFor="toAddress" className="block text-sm font-medium text-gray-700">Адрес "до"</label>
-                                        <input type="text" name="toAddress" id="toAddress" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" value={formData.toAddress} onChange={handleChange} />
-                                    </div>
-                                </div>
-                                <div className="mt-6">
                                     <label htmlFor="message" className="block text-sm font-medium text-gray-700">Съобщение</label>
-                                    <textarea id="message" name="message" rows={4} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" value={formData.message} onChange={handleChange}></textarea>
+                                    <textarea id="message" name="message" rows={6} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" value={formData.message} onChange={handleChange} placeholder="Разкажете ни какво трябва да преместите..."></textarea>
                                 </div>
                                 <div className="mt-6">
                                     <div className="flex items-start">
