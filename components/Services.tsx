@@ -132,17 +132,8 @@ const Services: React.FC = () => {
                   </ul>
                 </div>
 
-                {/* Price and CTA */}
+                {/* CTA */}
                 <div className="mt-8">
-                  <div className="text-center mb-4">
-                    <motion.p
-                      whileHover={{ scale: 1.05 }}
-                      className="text-lg sm:text-xl font-bold text-gray-800 bg-gradient-to-r from-orange-100 to-orange-50 inline-block px-6 py-2 rounded-full border-2 border-orange-200"
-                    >
-                      {service.price}
-                    </motion.p>
-                  </div>
-
                   <motion.a
                     href="#contact"
                     whileHover={{ scale: 1.02 }}
