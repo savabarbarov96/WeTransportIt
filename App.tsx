@@ -1,38 +1,21 @@
-
 import React from 'react';
-import Header from './components/Header';
-import Hero from './components/Hero';
-import BeforeAfter from './components/BeforeAfter';
-import Services from './components/Services';
-import Coverage from './components/Coverage';
-import Pricing from './components/Pricing';
-import About from './components/About';
-import Testimonials from './components/Testimonials';
-import Process from './components/Process';
-import FAQ from './components/FAQ';
-import Contact from './components/Contact';
-import Footer from './components/Footer';
-import FloatingButtons from './components/FloatingButtons';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Layout from './components/Layout';
+import HomePage from './pages/HomePage';
+import StaraZagoraMovingPage from './pages/StaraZagoraMovingPage';
+import TransportServicesPage from './pages/TransportServicesPage';
 
 const App: React.FC = () => {
   return (
-    <div className="bg-gray-100 text-gray-800">
-      <Header />
-      <main>
-        <Hero />
-        <BeforeAfter />
-        <Services />
-        <Coverage />
-        <Pricing />
-        <About />
-        <Testimonials />
-        <Process />
-        <FAQ />
-        <Contact />
-      </main>
-      <Footer />
-      <FloatingButtons />
-    </div>
+    <Router>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/hamalski-uslugi-stara-zagora" element={<StaraZagoraMovingPage />} />
+          <Route path="/transportni-uslugi" element={<TransportServicesPage />} />
+        </Routes>
+      </Layout>
+    </Router>
   );
 };
 
