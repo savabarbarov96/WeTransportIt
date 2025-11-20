@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
 interface BeforeAfterPair {
@@ -9,14 +9,11 @@ interface BeforeAfterPair {
 
 const BeforeAfter: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [sliderPosition, setSliderPosition] = useState(50);
-  const [isDragging, setIsDragging] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
 
   const pairs: BeforeAfterPair[] = [
     { before: '/assets/before1.jpg', after: '/assets/after1.jpg', title: 'Преместване на апартамент' },
     { before: '/assets/before2.jpg', after: '/assets/after2.jpg', title: 'Транспорт на офис' },
-    { before: '/assets/before3.jpg', after: '/assets/after3.jpg', title: 'Товарене и разтоварване' },
+    { before: '/assets/before3.jpg', after: '/assets/before3.jpg', title: 'Товарене и разтоварване' },
     { before: '/assets/before4.jpg', after: '/assets/after4.jpg', title: 'Професионален транспорт' },
   ];
 
@@ -56,48 +53,24 @@ const BeforeAfter: React.FC = () => {
     },
   };
 
-  const handleMouseDown = () => {
-    setIsDragging(true);
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!isDragging || !containerRef.current) return;
-
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
-    const percent = (x / rect.width) * 100;
-    setSliderPosition(percent);
-  };
-
-  const handleTouchStart = () => {
-    setIsDragging(true);
-  };
-
-  const handleTouchEnd = () => {
-    setIsDragging(false);
-  };
-
-  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
-    if (!isDragging || !containerRef.current) return;
-
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = Math.max(0, Math.min(e.touches[0].clientX - rect.left, rect.width));
-    const percent = (x / rect.width) * 100;
-    setSliderPosition(percent);
+  const imageVariants = {
+    hidden: { opacity: 0, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 0.6,
+        ease: [0.6, -0.05, 0.01, 0.99],
+      },
+    },
   };
 
   const goToNext = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % pairs.length);
-    setSliderPosition(50);
   };
 
   const goToPrevious = () => {
     setCurrentIndex((prevIndex) => (prevIndex - 1 + pairs.length) % pairs.length);
-    setSliderPosition(50);
   };
 
   return (
@@ -126,71 +99,92 @@ const BeforeAfter: React.FC = () => {
             </p>
           </motion.div>
 
-          {/* Before/After Slider */}
-          <motion.div variants={itemVariants} className="mb-8 sm:mb-12">
-            <div
-              ref={containerRef}
-              className="relative w-full max-w-4xl mx-auto aspect-video rounded-2xl overflow-hidden shadow-2xl shadow-orange-500/20 border border-orange-500/20 bg-gray-900"
-              onMouseMove={handleMouseMove}
-              onMouseUp={handleMouseUp}
-              onMouseLeave={handleMouseUp}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
-            >
-              {/* After Image (Background) */}
-              <div className="absolute inset-0">
-                <img
-                  src={pairs[currentIndex].after}
-                  alt="After"
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute top-4 right-4 px-4 py-2 bg-orange-500/90 backdrop-blur-sm rounded-full">
-                  <span className="text-white font-bold text-sm">СЛЕД</span>
-                </div>
-              </div>
+          {/* Current Project Title */}
+          <motion.div variants={itemVariants} className="text-center mb-6 sm:mb-8">
+            <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white">
+              {pairs[currentIndex].title}
+            </h3>
+          </motion.div>
 
-              {/* Before Image (Foreground with clip) */}
-              <div
-                className="absolute inset-0 select-none"
-                style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
+          {/* Before/After Comparison */}
+          <motion.div
+            key={currentIndex}
+            variants={itemVariants}
+            className="mb-8 sm:mb-12"
+          >
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 max-w-6xl mx-auto">
+              {/* Before Image Card */}
+              <motion.div
+                variants={imageVariants}
+                className="group relative overflow-hidden rounded-2xl shadow-2xl shadow-orange-500/10 border border-orange-500/20 bg-gray-900"
               >
-                <img
-                  src={pairs[currentIndex].before}
-                  alt="Before"
-                  className="w-full h-full object-cover"
-                  draggable="false"
-                />
-                <div className="absolute top-4 left-4 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-full">
-                  <span className="text-gray-900 font-bold text-sm">ПРЕДИ</span>
+                <div className="relative aspect-[4/3] overflow-hidden">
+                  <img
+                    src={pairs[currentIndex].before}
+                    alt="Преди"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  {/* Gradient overlay on hover */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
-              </div>
 
-              {/* Slider Handle */}
-              <div
-                className="absolute top-0 bottom-0 w-1 bg-orange-500 cursor-ew-resize"
-                style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }}
-                onMouseDown={handleMouseDown}
-                onTouchStart={handleTouchStart}
-              >
-                {/* Handle Circle */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-orange-500 rounded-full shadow-lg shadow-orange-500/50 flex items-center justify-center cursor-ew-resize hover:scale-110 transition-transform">
-                  <div className="flex gap-1">
-                    <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
-                    </svg>
-                    <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
-                    </svg>
-                  </div>
+                {/* Label */}
+                <div className="absolute top-4 left-4 px-5 py-2.5 bg-white/95 backdrop-blur-sm rounded-full shadow-lg">
+                  <span className="text-gray-900 font-bold text-sm sm:text-base tracking-wide">ПРЕДИ</span>
                 </div>
+
+                {/* Bottom gradient for better text visibility */}
+                <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/80 to-transparent pointer-events-none"></div>
+              </motion.div>
+
+              {/* After Image Card */}
+              <motion.div
+                variants={imageVariants}
+                className="group relative overflow-hidden rounded-2xl shadow-2xl shadow-orange-500/20 border border-orange-500/30 bg-gray-900"
+              >
+                <div className="relative aspect-[4/3] overflow-hidden">
+                  <img
+                    src={pairs[currentIndex].after}
+                    alt="След"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  {/* Gradient overlay on hover */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-orange-900/40 via-orange-900/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                </div>
+
+                {/* Label */}
+                <div className="absolute top-4 right-4 px-5 py-2.5 bg-orange-500/95 backdrop-blur-sm rounded-full shadow-lg shadow-orange-500/50">
+                  <span className="text-white font-bold text-sm sm:text-base tracking-wide">СЛЕД</span>
+                </div>
+
+                {/* Bottom gradient for better visual */}
+                <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-orange-900/60 to-transparent pointer-events-none"></div>
+
+                {/* Checkmark icon overlay on hover */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 sm:w-20 sm:h-20 bg-orange-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 scale-50 group-hover:scale-100 shadow-2xl shadow-orange-500/50">
+                  <svg className="w-8 h-8 sm:w-10 sm:h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Visual separator with arrow for desktop */}
+            <div className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center justify-center pointer-events-none">
+              <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center shadow-2xl shadow-orange-500/50 animate-pulse">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                </svg>
               </div>
             </div>
 
-            {/* Current Project Title */}
-            <div className="text-center mt-6">
-              <h3 className="text-xl sm:text-2xl font-bold text-white">
-                {pairs[currentIndex].title}
-              </h3>
+            {/* Visual separator with arrow for mobile */}
+            <div className="lg:hidden flex items-center justify-center my-6">
+              <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center shadow-2xl shadow-orange-500/50">
+                <svg className="w-6 h-6 text-white rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
             </div>
           </motion.div>
 
@@ -221,10 +215,7 @@ const BeforeAfter: React.FC = () => {
               {pairs.map((_, index) => (
                 <button
                   key={index}
-                  onClick={() => {
-                    setCurrentIndex(index);
-                    setSliderPosition(50);
-                  }}
+                  onClick={() => setCurrentIndex(index)}
                   className={`w-3 h-3 rounded-full transition-all duration-300 ${
                     index === currentIndex
                       ? 'bg-orange-500 w-8'
