@@ -109,6 +109,8 @@ const BeforeAfter: React.FC = () => {
           {/* Before/After Comparison */}
           <motion.div
             key={currentIndex}
+            initial="hidden"
+            animate="visible"
             variants={itemVariants}
             className="mb-8 sm:mb-12"
           >
